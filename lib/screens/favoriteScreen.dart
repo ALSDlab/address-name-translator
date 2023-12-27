@@ -32,18 +32,26 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     setState(() {
       _loadFavorites();
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-        leadingWidth: 90,
-        leading: const Text(
-          '즐겨찾기',
-          style: TextStyle(color: Colors.black, fontSize: 22),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: const Color(0xff19ddcb),
+        leadingWidth: 200,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 25),
+          child: Text(
+            '즐겨찾기',
+            style: TextStyle(
+                color: Colors.black, fontSize: 25, fontFamily: 'Dohyeon'),
+          ),
         ),
       ),
       body: Stack(children: [
@@ -53,16 +61,20 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             child: Icon(Icons.favorite_border, size: 300),
           ),
         ),
-        ListView.builder(
-          itemCount: favoriteList.length,
-          itemBuilder: (context, index) {
-            final favorite = favoriteList[index];
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: favoriteList.length,
+            itemBuilder: (context, index) {
+              final favorite = favoriteList[index];
 
-            return FavoriteCard(
-              favorite: favorite,
-              onRemove: () => _removeFromFavorites(favorite),
-            );
-          },
+              return FavoriteCard(
+                favorite: favorite,
+                onRemove: () => _removeFromFavorites(favorite),
+              );
+            },
+          ),
         ),
       ]),
     );

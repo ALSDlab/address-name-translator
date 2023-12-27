@@ -74,11 +74,20 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-        leadingWidth: 90,
-        leading: const Text(
-          '주소변환',
-          style: TextStyle(color: Colors.black, fontSize: 22),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
+        backgroundColor: const Color(0xff19ddcb),
+        leadingWidth: 200,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 25),
+          child: Text(
+            '주소변환',
+            style: TextStyle(
+                color: Colors.black, fontSize: 25, fontFamily: 'Dohyeon'),
+          ),
         ),
       ),
       body: Stack(
@@ -90,7 +99,7 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -113,6 +122,9 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                           }
                           return null;
                         },
+                        style: const TextStyle(
+                          fontFamily: 'Dohyeon',
+                        ),
                       ),
                       Positioned(
                         top: 4,
@@ -137,8 +149,10 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                   Expanded(
                     flex: 8,
                     child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: _addressResults.length,
-                      separatorBuilder: (BuildContext context, int index) => const Divider(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
                         height: 0.5,
                         color: Colors.grey,
                       ),
@@ -148,9 +162,16 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                       },
                     ),
                   ),
-                  Text('검색결과: $_totalCount'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      '검색결과: $_totalCount',
+                      style: const TextStyle(fontFamily: 'Dohyeon'),
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: _totalPage,
                       itemBuilder: (context, index) {
@@ -159,7 +180,9 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                             final String keyword = _addressController.text;
                             getJusoInfoResult(index + 1, keyword);
                           },
-                          child: Text('${index + 1}'),
+                          child: Text('${index + 1}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontFamily: 'Dohyeon')),
                         );
                       },
                     ),

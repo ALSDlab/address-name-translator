@@ -22,11 +22,14 @@ class _FriendsScreen extends State<NameTranslateScreen> {
         CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: Colors.greenAccent,
-              leadingWidth: 90,
-              leading: Text(
-                '이름변환',
-                style: TextStyle(color: Colors.black, fontSize: 22),
+              backgroundColor: Color(0xff19ddcb),
+              leadingWidth: 100,
+              leading: Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Text(
+                  '이름변환',
+                  style: TextStyle(color: Colors.black, fontSize: 22),
+                ),
               ),
             )
           ],

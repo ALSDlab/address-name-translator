@@ -35,11 +35,11 @@ class AddressResultCard extends StatelessWidget {
           IconButton(
               onPressed: () {
                 copyToClipboard('[${result.zipNo}] ${result.roadAddr}');
-                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.'),
+                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.', style: TextStyle(fontFamily: 'Dohyeon'),),
                   duration: Duration(seconds: 1),);
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
-              icon: const Icon(Icons.content_copy)),
+              icon: const Icon(Icons.content_copy, size: 25,)),
           IconButton(
               onPressed: () {
                 FavoriteData favoriteData = FavoriteData(
@@ -48,7 +48,7 @@ class AddressResultCard extends StatelessWidget {
                 FavoriteAddRemove.addToFavoriteList(favoriteData, context);
 
               },
-              icon: const Icon(Icons.favorite_border))
+              icon: const Icon(Icons.favorite_border, size: 25,))
         ],
       ),
     );

@@ -44,7 +44,7 @@ class TranslateDetail {
   factory TranslateDetail.fromJson(Map<String, dynamic> map) {
     return TranslateDetail(
       common: map['common'] as ResultCommon,
-      juso: map['juso'] as List<JusoDetail>,
+      juso: (map['juso'] as List<JusoDetail>),
     );
   }
 
