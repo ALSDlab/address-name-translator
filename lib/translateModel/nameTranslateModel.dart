@@ -1,5 +1,4 @@
-class NameTranslateDetail{
-
+class NameTranslateDetail {
   List<LoadedData> aResult;
 
 //<editor-fold desc="Data Methods">
@@ -44,8 +43,6 @@ class NameTranslateDetail{
 
 //</editor-fold>
 }
-
-
 
 class LoadedData {
   String sFirstName;

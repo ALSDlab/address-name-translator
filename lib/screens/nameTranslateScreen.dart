@@ -22,7 +22,8 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
   final String clientSecret = 'tKEABJyJYvBPFVW8FIKIRnrY9arJGAjK7i8pzPNc';
 
   Future<void> getNameInfoResult(String koreanName) async {
-    const String apiUrl = 'https://naveropenapi.apigw.ntruss.com/krdict/v1/romanization';
+    const String apiUrl =
+        'https://naveropenapi.apigw.ntruss.com/krdict/v1/romanization';
     final String keyword = Uri.encodeFull(koreanName);
     final http.Response response = await http.get(
       Uri.parse('$apiUrl?query=$keyword'),
