@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:name_address_translator/widgets/AddressResultCard.dart';
+import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
 
 class FavoriteCard extends StatelessWidget {
   const FavoriteCard({super.key, required this.favorite});
@@ -38,8 +39,10 @@ class FavoriteCard extends StatelessWidget {
               icon: const Icon(Icons.delete_outline_rounded)),
           IconButton(
               onPressed: () {
+                FavoriteAddRemove.removeFromFavoriteList(favorite);
                 const snackBar = SnackBar(content: Text('삭제되었습니다.'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
               },
               icon: const Icon(Icons.favorite_border))
         ],

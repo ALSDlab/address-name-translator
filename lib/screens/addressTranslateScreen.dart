@@ -10,10 +10,10 @@ class AddressTranslateScreen extends StatefulWidget {
   const AddressTranslateScreen({super.key});
 
   @override
-  State<AddressTranslateScreen> createState() => _FriendsScreen();
+  State<AddressTranslateScreen> createState() => _AddressTranslateScreen();
 }
 
-class _FriendsScreen extends State<AddressTranslateScreen> {
+class _AddressTranslateScreen extends State<AddressTranslateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _addressController = TextEditingController();
   List<JusoDetail> _addressResults = [];

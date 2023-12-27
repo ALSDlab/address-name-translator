@@ -1,15 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:name_address_translator/translateModel/translateModel.dart';
+import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
 
 class AddressResultCard extends StatelessWidget {
   final JusoDetail result;
+
   const AddressResultCard({super.key, required this.result});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +43,8 @@ class AddressResultCard extends StatelessWidget {
                 FavoriteData favoriteData = FavoriteData(
                     firstString: '[${result.zipNo}] ${result.roadAddr}',
                     secondString: result.korAddr);
-                context.push(
-                  Uri(
-                    path: '/favorite',
-                    queryParameters: {
-                      'Favorite': jsonEncode(favoriteData.toJson)
-                    },
-                  ).toString(),
-                );
+                FavoriteAddRemove.addToFavoriteList(favoriteData);
+
                 const snackBar = SnackBar(content: Text('즐겨찾기에 추가되었습니다.'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
