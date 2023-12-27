@@ -35,7 +35,8 @@ class FavoriteCard extends StatelessWidget {
           IconButton(
               onPressed: () {
                 copyToClipboard(favorite.firstString);
-                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.'));
+                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.'),
+                  duration: Duration(seconds: 1),);
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: const Icon(Icons.content_copy)),
@@ -43,7 +44,8 @@ class FavoriteCard extends StatelessWidget {
               onPressed: () {
                 onRemove();
                 FavoriteAddRemove.removeFromFavoriteList(favorite);
-                const snackBar = SnackBar(content: Text('삭제되었습니다.'));
+                const snackBar = SnackBar(content: Text('삭제되었습니다.'),
+                  duration: Duration(seconds: 1),);
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
               },
