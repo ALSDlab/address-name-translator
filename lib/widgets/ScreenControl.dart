@@ -13,8 +13,8 @@ class ScreenControl extends StatefulWidget {
 class _ScreenControlState extends State<ScreenControl> {
   var _index = 0;
   final _pages = [
-    // const NameTranslateScreen(),
     const AddressTranslateScreen(),
+    const NameTranslateScreen(),
     const FavoriteScreen(),
   ];
 
@@ -71,13 +71,13 @@ class _ScreenControlState extends State<ScreenControl> {
             backgroundColor: const Color(0xff19ddcb),
             type: BottomNavigationBarType.fixed,
             items: const <BottomNavigationBarItem>[
-              // BottomNavigationBarItem(
-              //   label: '이름변환',
-              //   icon: Icon(Icons.translate_rounded),
-              // ),
               BottomNavigationBarItem(
                 label: '주소변환',
                 icon: Icon(Icons.maps_home_work_rounded),
+              ),
+              BottomNavigationBarItem(
+                label: '이름변환',
+                icon: Icon(Icons.person),
               ),
               BottomNavigationBarItem(
                 label: '즐겨찾기',

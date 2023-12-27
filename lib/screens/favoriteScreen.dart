@@ -58,7 +58,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         const Opacity(
           opacity: 0.1,
           child: Center(
-            child: Icon(Icons.favorite_border, size: 300),
+            child: Icon(Icons.favorite_border_rounded, size: 300),
           ),
         ),
         Padding(

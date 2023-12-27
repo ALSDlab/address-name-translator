@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/translateModel/translateModel.dart';
+import 'package:name_address_translator/translateModel/addressTranslateModel.dart';
 import 'package:name_address_translator/widgets/AddressResultCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

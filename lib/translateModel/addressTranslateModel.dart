@@ -1,9 +1,9 @@
-class TranslateDetail {
+class AddressTranslateDetail {
   ResultCommon common;
   List<JusoDetail> juso;
 
 //<editor-fold desc="Data Methods">
-  TranslateDetail({
+  AddressTranslateDetail({
     required this.common,
     required this.juso,
   });
@@ -11,7 +11,7 @@ class TranslateDetail {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TranslateDetail &&
+      (other is AddressTranslateDetail &&
           runtimeType == other.runtimeType &&
           common == other.common &&
           juso == other.juso);
@@ -24,11 +24,11 @@ class TranslateDetail {
     return 'TranslateDetail{ common: $common, juso: $juso,}';
   }
 
-  TranslateDetail copyWith({
+  AddressTranslateDetail copyWith({
     ResultCommon? common,
     List<JusoDetail>? juso,
   }) {
-    return TranslateDetail(
+    return AddressTranslateDetail(
       common: common ?? this.common,
       juso: juso ?? this.juso,
     );
@@ -41,8 +41,8 @@ class TranslateDetail {
     };
   }
 
-  factory TranslateDetail.fromJson(Map<String, dynamic> map) {
-    return TranslateDetail(
+  factory AddressTranslateDetail.fromJson(Map<String, dynamic> map) {
+    return AddressTranslateDetail(
       common: map['common'] as ResultCommon,
       juso: (map['juso'] as List<JusoDetail>),
     );
