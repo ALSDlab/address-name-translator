@@ -162,13 +162,6 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      '검색결과: $_totalCount',
-                      style: const TextStyle(fontFamily: 'Dohyeon'),
-                    ),
-                  ),
                   Expanded(
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
@@ -186,7 +179,14 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                         );
                       },
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      '검색결과: $_totalCount',
+                      style: const TextStyle(fontFamily: 'Dohyeon'),
+                    ),
+                  ),
                 ],
               ),
             ),

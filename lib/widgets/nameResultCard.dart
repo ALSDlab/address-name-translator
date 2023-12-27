@@ -52,7 +52,7 @@ class NameResultCard extends StatelessWidget {
               onPressed: () {
                 FavoriteData favoriteData = FavoriteData(
                     firstString: result.name,
-                    secondString: '정확도: ${result.score}');
+                    secondString: '정확도: ${result.score} %');
                 FavoriteAddRemove.addToFavoriteList(favoriteData, context);
               },
               icon: const Icon(
