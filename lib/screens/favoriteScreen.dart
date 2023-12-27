@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/widgets/AddressResultCard.dart';
+import 'package:name_address_translator/translateModel/favoriteModel.dart';
 import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
 import 'package:name_address_translator/widgets/favoriteCard.dart';
 
@@ -26,6 +26,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     });
   }
 
+  void _removeFromFavorites(FavoriteData item) async {
+    await FavoriteAddRemove.removeFromFavoriteList(item);
+    // 삭제 후에는 다시 목록을 불러올 수 있도록 _loadFavorites 메서드 호출
+    setState(() {
+      _loadFavorites();
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,13 +58,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           itemBuilder: (context, index) {
             final favorite = favoriteList[index];
 
-            return FavoriteCard(favorite: favorite);
+            return FavoriteCard(
+              favorite: favorite,
+              onRemove: () => _removeFromFavorites(favorite),
+            );
           },
         ),
       ]),
     );
   }
 }
-
-
-

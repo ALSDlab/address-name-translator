@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:name_address_translator/widgets/AddressResultCard.dart';
+import 'package:name_address_translator/translateModel/favoriteModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteAddRemove {
@@ -30,11 +30,18 @@ class FavoriteAddRemove {
   }
 
   static Future<void> removeFromFavoriteList(FavoriteData item) async {
-    List<FavoriteData> currentList = await getFavoriteList();
-    currentList.remove(item);
+    try {
+      List<FavoriteData> currentList = await getFavoriteList();
+      print('Before removal: $currentList');
+      currentList.remove(item);
+      print('After removal: $currentList');
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonString = jsonEncode(currentList.map((e) => e.toJson()).toList());
-    prefs.setString(_key, jsonString);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String jsonString =
+          jsonEncode(currentList.map((e) => e.toJson()).toList());
+      prefs.setString(_key, jsonString);
+    } catch (e) {
+      print('Error during removal: $e');
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:name_address_translator/translateModel/favoriteModel.dart';
 import 'package:name_address_translator/translateModel/translateModel.dart';
 import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
 
@@ -57,28 +58,4 @@ class AddressResultCard extends StatelessWidget {
 
 void copyToClipboard(String text) {
   Clipboard.setData(ClipboardData(text: text));
-}
-
-class FavoriteData {
-  String firstString;
-  String secondString;
-
-  FavoriteData({
-    required this.firstString,
-    required this.secondString,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'firstString': firstString,
-      'secondString': secondString,
-    };
-  }
-
-  factory FavoriteData.fromJson(Map<String, dynamic> map) {
-    return FavoriteData(
-      firstString: map['firstString'] as String,
-      secondString: map['secondString'] as String,
-    );
-  }
 }
