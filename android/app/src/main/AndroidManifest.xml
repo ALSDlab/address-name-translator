@@ -3,7 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="name_address_translator"
+        android:label="영어주소영어이름"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
