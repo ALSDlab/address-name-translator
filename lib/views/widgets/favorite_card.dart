@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/translateModel/favoriteModel.dart';
-import 'package:name_address_translator/widgets/AddressResultCard.dart';
-import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
+import 'package:name_address_translator/models/model/favorite_model.dart';
+import 'package:name_address_translator/views/widgets/address_result_card.dart';
+import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
+
 
 class FavoriteCard extends StatelessWidget {
-  const FavoriteCard({super.key, required this.favorite, required this.onRemove});
+  const FavoriteCard(
+      {super.key, required this.favorite, required this.onRemove});
 
   final FavoriteData favorite;
   final VoidCallback onRemove;
@@ -48,21 +50,32 @@ class FavoriteCard extends StatelessWidget {
           IconButton(
               onPressed: () {
                 copyToClipboard(favorite.firstString);
-                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.',style: TextStyle(fontFamily: 'Dohyeon')),
-                  duration: Duration(seconds: 1),);
+                const snackBar = SnackBar(
+                  content: Text('클립보드에 복사되었습니다.',
+                      style: TextStyle(fontFamily: 'Dohyeon')),
+                  duration: Duration(seconds: 1),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
-              icon: const Icon(Icons.content_copy, size: 25,)),
+              icon: const Icon(
+                Icons.content_copy,
+                size: 25,
+              )),
           IconButton(
               onPressed: () {
                 onRemove();
                 FavoriteAddRemove.removeFromFavoriteList(favorite);
-                const snackBar = SnackBar(content: Text('삭제되었습니다.',style: TextStyle(fontFamily: 'Dohyeon')),
-                  duration: Duration(seconds: 1),);
+                const snackBar = SnackBar(
+                  content:
+                      Text('삭제되었습니다.', style: TextStyle(fontFamily: 'Dohyeon')),
+                  duration: Duration(seconds: 1),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
               },
-              icon: const Icon(Icons.delete_outline_rounded, size: 30,))
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                size: 30,
+              ))
         ],
       ),
     );

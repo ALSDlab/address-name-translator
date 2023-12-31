@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/screens/addressTranslateScreen.dart';
-import 'package:name_address_translator/screens/favoriteScreen.dart';
-import 'package:name_address_translator/screens/nameTranslateScreen.dart';
+import 'package:name_address_translator/views/screens/address_translate_screen.dart';
+import 'package:name_address_translator/views/screens/favorite_screen.dart';
+import 'package:name_address_translator/views/screens/name_translate_screen.dart';
+
 
 class ScreenControl extends StatefulWidget {
   const ScreenControl({super.key});

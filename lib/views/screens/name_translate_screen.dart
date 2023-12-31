@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:name_address_translator/translateModel/nameTranslateModel.dart';
-import 'package:name_address_translator/widgets/nameResultCard.dart';
+import 'package:name_address_translator/viewmodels/name_translate_viewmodel.dart';
+import 'package:name_address_translator/views/widgets/name_result_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameTranslateScreen extends StatefulWidget {
@@ -16,39 +13,7 @@ class NameTranslateScreen extends StatefulWidget {
 class _NameTranslateScreen extends State<NameTranslateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  List<NameResults> _nameResults = [];
-
-  final String clientId = 'rwqrupk9k8';
-  final String clientSecret = 'tKEABJyJYvBPFVW8FIKIRnrY9arJGAjK7i8pzPNc';
-
-  Future<void> getNameInfoResult(String koreanName) async {
-    const String apiUrl =
-        'https://naveropenapi.apigw.ntruss.com/krdict/v1/romanization';
-    final String keyword = Uri.encodeFull(koreanName);
-    final http.Response response = await http.get(
-      Uri.parse('$apiUrl?query=$keyword'),
-      headers: {
-        'X-NCP-APIGW-API-KEY-ID': clientId,
-        'X-NCP-APIGW-API-KEY': clientSecret,
-      },
-    );
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> nameList = data['aResult'][0]['aItems'];
-      print(nameList);
-      List<NameResults> results = [];
-      for (var nameData in nameList) {
-        results.add(NameResults.fromJson(nameData));
-      }
-      setState(() {
-        _nameResults = results;
-      });
-    } else {
-      throw Exception('Failed to load name results');
-    }
-  }
+  final viewModel = NameTranslateViewmodel();
 
   @override
   void initState() {
@@ -142,7 +107,7 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
                             }
                             save();
                             final String keyword = _nameController.text;
-                            getNameInfoResult(keyword);
+                            viewModel.getNameInfoResult(keyword);
                           },
                           icon: const Icon(
                             Icons.search_rounded,
@@ -153,26 +118,45 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
                     ],
                   ),
                   Expanded(
-                    flex: 8,
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: _nameResults.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        height: 0.5,
-                        color: Colors.grey,
-                      ),
-                      itemBuilder: (context, index) {
-                        final nameResult = _nameResults[index];
-                        return NameResultCard(result: nameResult);
+                    child: StreamBuilder<bool>(
+                      initialData: false,
+                      stream: viewModel.loadingController,
+                      builder: (context, snapshot) {
+                        if (snapshot.data == true) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Expanded(
+                              flex: 8,
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: viewModel.nameResults.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(
+                                  height: 0.5,
+                                  color: Colors.grey,
+                                ),
+                                itemBuilder: (context, index) {
+                                  final nameResult =
+                                      viewModel.nameResults[index];
+                                  return NameResultCard(result: nameResult);
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                '검색결과: ${viewModel.nameResults.length}',
+                                style: const TextStyle(fontFamily: 'Dohyeon'),
+                              ),
+                            ),
+                          ],
+                        );
                       },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      '검색결과: ${_nameResults.length}',
-                      style: const TextStyle(fontFamily: 'Dohyeon'),
                     ),
                   ),
                 ],

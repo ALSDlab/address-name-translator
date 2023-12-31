@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/translateModel/favoriteModel.dart';
-import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
-import 'package:name_address_translator/widgets/favoriteCard.dart';
+import 'package:name_address_translator/models/model/favorite_model.dart';
+import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
+import 'package:name_address_translator/views/widgets/favorite_card.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});

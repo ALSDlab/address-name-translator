@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:name_address_translator/translateModel/favoriteModel.dart';
-import 'package:name_address_translator/translateModel/nameTranslateModel.dart';
-import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
+import 'package:name_address_translator/models/model/address_translate_model.dart';
+import 'package:name_address_translator/models/model/favorite_model.dart';
+import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
 
-class NameResultCard extends StatelessWidget {
-  const NameResultCard({super.key, required this.result});
+class AddressResultCard extends StatelessWidget {
+  final AddressItemModel result;
 
-  final NameResults result;
+  const AddressResultCard({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,11 @@ class NameResultCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  result.name,
+                  '[${result.zipNumber}] ${result.engAddr}',
                   style: const TextStyle(fontSize: 15, color: Colors.black),
                 ),
                 Text(
-                  '정확도: ${result.score} %',
+                  result.korAddr,
                   style: const TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],
@@ -34,7 +34,7 @@ class NameResultCard extends StatelessWidget {
           ),
           IconButton(
               onPressed: () {
-                copyToClipboard(result.name);
+                copyToClipboard('[${result.zipNumber}] ${result.engAddr}');
                 const snackBar = SnackBar(
                   content: Text(
                     '클립보드에 복사되었습니다.',
@@ -51,8 +51,8 @@ class NameResultCard extends StatelessWidget {
           IconButton(
               onPressed: () {
                 FavoriteData favoriteData = FavoriteData(
-                    firstString: result.name,
-                    secondString: '정확도: ${result.score} %');
+                    firstString: '[${result.zipNumber}] ${result.engAddr}',
+                    secondString: result.korAddr);
                 FavoriteAddRemove.addToFavoriteList(favoriteData, context);
               },
               icon: const Icon(

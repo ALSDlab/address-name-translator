@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/translateModel/favoriteModel.dart';
+import 'package:name_address_translator/models/model/favorite_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteAddRemove {
@@ -36,14 +35,14 @@ class FavoriteAddRemove {
       prefs.setString(_key, jsonString);
 
       // 정상적으로 추가된 경우 스낵바로 알림
-      AddedSnackbar(context);
+      favoriteAddSnackBar(context);
     } else {
       // 이미 추가된 경우 스낵바로 알림
-      DuplicateSnackbar(context);
+      alreadyExistSnackBar(context);
     }
   }
 
-  static void AddedSnackbar(BuildContext context) {
+  static void favoriteAddSnackBar(BuildContext context) {
     const snackBar = SnackBar(
       content: Text('즐겨찾기에 추가되었습니다.', style: TextStyle(fontFamily: 'Dohyeon')),
       duration: Duration(seconds: 1),
@@ -51,7 +50,7 @@ class FavoriteAddRemove {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static void DuplicateSnackbar(BuildContext context) {
+  static void alreadyExistSnackBar(BuildContext context) {
     const snackBar = SnackBar(
       content:
           Text('이미 즐겨찾기에 추가된 항목입니다.', style: TextStyle(fontFamily: 'Dohyeon')),

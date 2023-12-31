@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:name_address_translator/translateModel/favoriteModel.dart';
-import 'package:name_address_translator/translateModel/addressTranslateModel.dart';
-import 'package:name_address_translator/widgets/favoriteAddRemove.dart';
+import 'package:name_address_translator/models/model/favorite_model.dart';
+import 'package:name_address_translator/models/model/name_translate_model.dart';
+import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
 
-class AddressResultCard extends StatelessWidget {
-  final JusoDetail result;
 
-  const AddressResultCard({super.key, required this.result});
+class NameResultCard extends StatelessWidget {
+  const NameResultCard({super.key, required this.result});
+
+  final NameItemModel result;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +23,11 @@ class AddressResultCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '[${result.zipNo}] ${result.roadAddr}',
+                  result.engName,
                   style: const TextStyle(fontSize: 15, color: Colors.black),
                 ),
                 Text(
-                  result.korAddr,
+                  '정확도: ${result.accuracy} %',
                   style: const TextStyle(fontSize: 13, color: Colors.grey),
                 ),
               ],
@@ -34,21 +35,31 @@ class AddressResultCard extends StatelessWidget {
           ),
           IconButton(
               onPressed: () {
-                copyToClipboard('[${result.zipNo}] ${result.roadAddr}');
-                const snackBar = SnackBar(content: Text('클립보드에 복사되었습니다.', style: TextStyle(fontFamily: 'Dohyeon'),),
-                  duration: Duration(seconds: 1),);
+                copyToClipboard(result.engName);
+                const snackBar = SnackBar(
+                  content: Text(
+                    '클립보드에 복사되었습니다.',
+                    style: TextStyle(fontFamily: 'Dohyeon'),
+                  ),
+                  duration: Duration(seconds: 1),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
-              icon: const Icon(Icons.content_copy, size: 25,)),
+              icon: const Icon(
+                Icons.content_copy,
+                size: 25,
+              )),
           IconButton(
               onPressed: () {
                 FavoriteData favoriteData = FavoriteData(
-                    firstString: '[${result.zipNo}] ${result.roadAddr}',
-                    secondString: result.korAddr);
+                    firstString: result.engName,
+                    secondString: '정확도: ${result.accuracy} %');
                 FavoriteAddRemove.addToFavoriteList(favoriteData, context);
-
               },
-              icon: const Icon(Icons.favorite_border, size: 25,))
+              icon: const Icon(
+                Icons.favorite_border,
+                size: 25,
+              ))
         ],
       ),
     );

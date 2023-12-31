@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/widgets/ScreenControl.dart';
+import 'package:name_address_translator/views/widgets/screen_control.dart';
 
 void main() {
   runApp(const MyApp());

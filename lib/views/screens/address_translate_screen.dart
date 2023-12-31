@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
-import 'package:name_address_translator/translateModel/addressTranslateModel.dart';
-import 'package:name_address_translator/widgets/AddressResultCard.dart';
+import 'package:name_address_translator/viewmodels/address_translate_viewmodel.dart';
+import 'package:name_address_translator/views/widgets/address_result_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressTranslateScreen extends StatefulWidget {
@@ -16,31 +13,7 @@ class AddressTranslateScreen extends StatefulWidget {
 class _AddressTranslateScreen extends State<AddressTranslateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _addressController = TextEditingController();
-  List<JusoDetail> _addressResults = [];
-  int currentPage = 1;
-  int _totalCount = 0;
-  int _totalPage = 0;
-
-  Future<void> getJusoInfoResult(int currentPage, String keyword) async {
-    final response = await http.get(Uri.parse(
-        'https://business.juso.go.kr/addrlink/addrEngApi.do?currentPage=$currentPage&countPerPage=20&keyword=${Uri.encodeFull(keyword)}&confmKey=U01TX0FVVEgyMDIzMTIyNjIzNTUzMTExNDM4NTc=&resultType=json'));
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      final List<dynamic> jusoList = data['results']['juso'];
-      final totalCount = int.parse(data['results']['common']['totalCount']);
-      List<JusoDetail> results = [];
-      for (var jusoData in jusoList) {
-        results.add(JusoDetail.fromJson(jusoData));
-      }
-      setState(() {
-        _addressResults = results;
-        _totalCount = totalCount;
-        _totalPage = totalCount ~/ 20 + 1;
-      });
-    } else {
-      throw Exception('Failed to load address results');
-    }
-  }
+  final viewModel = AddressTranslateViewmodel();
 
   @override
   void initState() {
@@ -136,7 +109,7 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                             }
                             save();
                             final String keyword = _addressController.text;
-                            getJusoInfoResult(currentPage, keyword);
+                            viewModel.getJusoInfoResult(1, keyword);
                           },
                           icon: const Icon(
                             Icons.search_rounded,
@@ -147,44 +120,67 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                     ],
                   ),
                   Expanded(
-                    flex: 8,
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: _addressResults.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(
-                        height: 0.5,
-                        color: Colors.grey,
-                      ),
-                      itemBuilder: (context, index) {
-                        final addressResult = _addressResults[index];
-                        return AddressResultCard(result: addressResult);
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _totalPage,
-                      itemBuilder: (context, index) {
-                        return TextButton(
-                          onPressed: () {
-                            final String keyword = _addressController.text;
-                            getJusoInfoResult(index + 1, keyword);
-                          },
-                          child: Text('${index + 1}',
-                              style: const TextStyle(
-                                  fontSize: 18, fontFamily: 'Dohyeon')),
+                    child: StreamBuilder<bool>(
+                      initialData: false,
+                      stream: viewModel.loadingController,
+                      builder: (context, snapshot) {
+                        if (snapshot.data == true) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Expanded(
+                              flex: 8,
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: viewModel.addressResults.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(
+                                  height: 0.5,
+                                  color: Colors.grey,
+                                ),
+                                itemBuilder: (context, index) {
+                                  final addressResult =
+                                      viewModel.addressResults[index];
+                                  return AddressResultCard(
+                                      result: addressResult);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: viewModel.totalPage,
+                                itemBuilder: (context, index) {
+                                  return TextButton(
+                                    onPressed: () {
+                                      final String keyword =
+                                          _addressController.text;
+                                      viewModel.getJusoInfoResult(
+                                          index + 1, keyword);
+                                    },
+                                    child: Text('${index + 1}',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: 'Dohyeon')),
+                                  );
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                '검색결과: ${viewModel.totalCount}',
+                                style: const TextStyle(fontFamily: 'Dohyeon'),
+                              ),
+                            ),
+                          ],
                         );
                       },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      '검색결과: $_totalCount',
-                      style: const TextStyle(fontFamily: 'Dohyeon'),
                     ),
                   ),
                 ],
