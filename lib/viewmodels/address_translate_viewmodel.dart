@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:name_address_translator/models/model/address_translate_model.dart';
-import 'package:name_address_translator/models/repository/address_translate_repository.dart';
+import 'package:name_address_translator/models/repository/address_translate_repository_impl.dart';
 
 class AddressTranslateViewmodel {
   List _searchResults = [];
@@ -21,7 +21,7 @@ class AddressTranslateViewmodel {
 
   Stream<bool> get loadingController => _loadingController.stream;
 
-  final _repository = AddressTranslateItemsRepository();
+  final _repository = AddressTranslateItemsRepositoryImpl();
 
   Future<void> getJusoInfoResult(int currentPage, String keyword) async {
     //화면갱신
