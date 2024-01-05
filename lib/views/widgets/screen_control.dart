@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:name_address_translator/viewmodels/screen_control_viewmodel.dart';
 import 'package:name_address_translator/views/screens/address_translate_screen.dart';
 import 'package:name_address_translator/views/screens/favorite_screen.dart';
 import 'package:name_address_translator/views/screens/name_translate_screen.dart';
+import 'package:provider/provider.dart';
 
 
 class ScreenControl extends StatefulWidget {
@@ -12,7 +14,6 @@ class ScreenControl extends StatefulWidget {
 }
 
 class _ScreenControlState extends State<ScreenControl> {
-  var _index = 0;
   final _pages = [
     const AddressTranslateScreen(),
     const NameTranslateScreen(),
@@ -21,6 +22,7 @@ class _ScreenControlState extends State<ScreenControl> {
 
   @override
   Widget build(BuildContext context) {
+    int _index = Provider.of<ScreenIndexProvider>(context).currentIndex;
     return Scaffold(
       body: Stack(
         children: [
@@ -63,10 +65,8 @@ class _ScreenControlState extends State<ScreenControl> {
             ],
           ),
           child: BottomNavigationBar(
-            onTap: (index) {
-              setState(() {
-                _index = index;
-              });
+            onTap:  (index) {
+              Provider.of<ScreenIndexProvider>(context, listen: false).setIndex(index);
             },
             currentIndex: _index,
             backgroundColor: const Color(0xff19ddcb),
