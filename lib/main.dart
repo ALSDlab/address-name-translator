@@ -1,18 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:name_address_translator/models/di/di_setup.dart';
-import 'package:name_address_translator/viewmodels/screen_control_viewmodel.dart';
-import 'package:name_address_translator/views/widgets/screen_control.dart';
-import 'package:provider/provider.dart';
+import 'package:name_address_translator/routes.dart';
 
 void main() {
   diSetup();
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ScreenIndexProvider(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,13 +13,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ScreenControl(),
     );
   }
 }
