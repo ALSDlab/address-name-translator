@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:name_address_translator/models/di/di_setup.dart';
 import 'package:name_address_translator/viewmodels/screen_control_viewmodel.dart';
 import 'package:name_address_translator/views/widgets/screen_control.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  diSetup();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ScreenIndexProvider(),

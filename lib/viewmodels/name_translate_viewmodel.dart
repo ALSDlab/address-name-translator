@@ -1,24 +1,37 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:name_address_translator/models/model/name_translate_model.dart';
 import 'package:name_address_translator/models/repository/name_translate_repository.dart';
 
-class NameTranslateViewmodel {
+class NameTranslateViewmodel extends ChangeNotifier{
+  final NameTranslateItemsRepository _repository;
+
+  NameTranslateViewmodel({
+    required NameTranslateItemsRepository repository,
+  }) : _repository = repository;
+
   List<NameItemModel> _nameResults = [];
-  final _loadingController = StreamController<bool>();
+  bool _isLoading = false;
+
 
   List<NameItemModel> get nameResults => _nameResults;
+  bool get isLoading => _isLoading;
 
-  Stream<bool> get loadingController => _loadingController.stream;
 
-  final _repository = NameTranslateItemsRepository();
+
 
   Future<void> getNameInfoResult(String korName) async {
     //화면갱신
-    _loadingController.add(true);
+
+    _isLoading = true;
+    notifyListeners();
+
     _nameResults = (await _repository.getNameTranslates(korName))!;
 
     //다시 화면갱신
-    _loadingController.add(false);
+    _isLoading = false;
+    notifyListeners();
   }
+
 }

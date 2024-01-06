@@ -1,15 +1,24 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:name_address_translator/models/model/address_translate_model.dart';
-import 'package:name_address_translator/models/repository/address_translate_repository_impl.dart';
 
-class AddressTranslateViewmodel {
+import '../models/repository/address_translate_repository.dart';
+
+class AddressTranslateViewmodel extends ChangeNotifier {
+  final AddressTranslateItemsRepository _repository;
+
+   AddressTranslateViewmodel({
+    required AddressTranslateItemsRepository repository,
+  }) : _repository = repository;
+
+
   List _searchResults = [];
   List<AddressItemModel> _addressResults = [];
   int currentPage = 1;
   int _totalCount = 0;
   int _totalPage = 0;
-  final _loadingController = StreamController<bool>();
+  bool _isLoading = false;
 
   List get searchResults => _searchResults;
 
@@ -19,13 +28,15 @@ class AddressTranslateViewmodel {
 
   int get totalPage => _totalPage;
 
-  Stream<bool> get loadingController => _loadingController.stream;
+  bool get isLoading => _isLoading;
 
-  final _repository = AddressTranslateItemsRepositoryImpl();
 
   Future<void> getJusoInfoResult(int currentPage, String keyword) async {
     //화면갱신
-    _loadingController.add(true);
+
+    _isLoading = true;
+    notifyListeners();
+
     _searchResults =
         await _repository.getAddressTranslates(currentPage, keyword);
     _addressResults = _searchResults[0];
@@ -33,6 +44,8 @@ class AddressTranslateViewmodel {
     _totalPage = _totalCount ~/ 20 + 1;
 
     //다시 화면갱신
-    _loadingController.add(false);
+    _isLoading = false;
+    notifyListeners();
   }
+
 }

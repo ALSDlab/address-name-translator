@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:name_address_translator/viewmodels/name_translate_viewmodel.dart';
 import 'package:name_address_translator/views/widgets/name_result_card.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameTranslateScreen extends StatefulWidget {
@@ -13,7 +14,6 @@ class NameTranslateScreen extends StatefulWidget {
 class _NameTranslateScreen extends State<NameTranslateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final viewModel = NameTranslateViewmodel();
 
   @override
   void initState() {
@@ -43,6 +43,7 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final nameViewModel = context.watch<NameTranslateViewmodel>();
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -107,7 +108,7 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
                             }
                             save();
                             final String keyword = _nameController.text;
-                            viewModel.getNameInfoResult(keyword);
+                            nameViewModel.getNameInfoResult(keyword);
                           },
                           icon: const Icon(
                             Icons.search_rounded,
@@ -117,48 +118,41 @@ class _NameTranslateScreen extends State<NameTranslateScreen> {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: StreamBuilder<bool>(
-                      initialData: false,
-                      stream: viewModel.loadingController,
-                      builder: (context, snapshot) {
-                        if (snapshot.data == true) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: viewModel.nameResults.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(
-                                  height: 0.5,
-                                  color: Colors.grey,
+                  nameViewModel.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 8,
+                                child: ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: nameViewModel.nameResults.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(
+                                    height: 0.5,
+                                    color: Colors.grey,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    final nameResult =
+                                        nameViewModel.nameResults[index];
+                                    return NameResultCard(result: nameResult);
+                                  },
                                 ),
-                                itemBuilder: (context, index) {
-                                  final nameResult =
-                                      viewModel.nameResults[index];
-                                  return NameResultCard(result: nameResult);
-                                },
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                '검색결과: ${viewModel.nameResults.length}',
-                                style: const TextStyle(fontFamily: 'Dohyeon'),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  '검색결과: ${nameViewModel.nameResults.length}',
+                                  style: const TextStyle(fontFamily: 'Dohyeon'),
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),

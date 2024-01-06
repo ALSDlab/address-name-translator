@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:name_address_translator/models/model/favorite_model.dart';
 import 'package:name_address_translator/views/widgets/address_result_card.dart';
-import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
+import 'package:name_address_translator/models/repository/favorite_add_remove.dart';
 
 
 class FavoriteCard extends StatelessWidget {

@@ -5,6 +5,9 @@ import 'package:name_address_translator/views/screens/favorite_screen.dart';
 import 'package:name_address_translator/views/screens/name_translate_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/di/di_setup.dart';
+import '../../viewmodels/address_translate_viewmodel.dart';
+import '../../viewmodels/name_translate_viewmodel.dart';
 
 class ScreenControl extends StatefulWidget {
   const ScreenControl({super.key});
@@ -15,14 +18,21 @@ class ScreenControl extends StatefulWidget {
 
 class _ScreenControlState extends State<ScreenControl> {
   final _pages = [
-    const AddressTranslateScreen(),
-    const NameTranslateScreen(),
+    ChangeNotifierProvider(
+      create: (_) => getIt<AddressTranslateViewmodel>(),
+      child: const AddressTranslateScreen(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => getIt<NameTranslateViewmodel>(),
+      child: const NameTranslateScreen(),
+    ),
     const FavoriteScreen(),
+
   ];
 
   @override
   Widget build(BuildContext context) {
-    int _index = Provider.of<ScreenIndexProvider>(context).currentIndex;
+    int index = Provider.of<ScreenIndexProvider>(context).currentIndex;
     return Scaffold(
       body: Stack(
         children: [
@@ -45,7 +55,7 @@ class _ScreenControlState extends State<ScreenControl> {
           Container(
             color: Colors.white.withOpacity(0.8),
           ),
-          _pages[_index],
+          _pages[index],
         ],
       ),
       bottomNavigationBar: Theme(
@@ -65,10 +75,11 @@ class _ScreenControlState extends State<ScreenControl> {
             ],
           ),
           child: BottomNavigationBar(
-            onTap:  (index) {
-              Provider.of<ScreenIndexProvider>(context, listen: false).setIndex(index);
+            onTap: (index) {
+              Provider.of<ScreenIndexProvider>(context, listen: false)
+                  .setIndex(index);
             },
-            currentIndex: _index,
+            currentIndex: index,
             backgroundColor: const Color(0xff19ddcb),
             type: BottomNavigationBarType.fixed,
             items: const <BottomNavigationBarItem>[

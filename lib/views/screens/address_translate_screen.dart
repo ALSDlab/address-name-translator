@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:name_address_translator/viewmodels/address_translate_viewmodel.dart';
 import 'package:name_address_translator/views/widgets/address_result_card.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressTranslateScreen extends StatefulWidget {
@@ -13,7 +14,6 @@ class AddressTranslateScreen extends StatefulWidget {
 class _AddressTranslateScreen extends State<AddressTranslateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _addressController = TextEditingController();
-  final viewModel = AddressTranslateViewmodel();
 
   @override
   void initState() {
@@ -45,6 +45,7 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final addrViewModel = context.watch<AddressTranslateViewmodel>();
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -109,7 +110,7 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                             }
                             save();
                             final String keyword = _addressController.text;
-                            viewModel.getJusoInfoResult(1, keyword);
+                            addrViewModel.getJusoInfoResult(1, keyword);
                           },
                           icon: const Icon(
                             Icons.search_rounded,
@@ -119,70 +120,64 @@ class _AddressTranslateScreen extends State<AddressTranslateScreen> {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: StreamBuilder<bool>(
-                      initialData: false,
-                      stream: viewModel.loadingController,
-                      builder: (context, snapshot) {
-                        if (snapshot.data == true) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: viewModel.addressResults.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(
-                                  height: 0.5,
-                                  color: Colors.grey,
+                  addrViewModel.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 8,
+                                child: ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount:
+                                      addrViewModel.addressResults.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(
+                                    height: 0.5,
+                                    color: Colors.grey,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    final addressResult =
+                                        addrViewModel.addressResults[index];
+                                    return AddressResultCard(
+                                        result: addressResult);
+                                  },
                                 ),
-                                itemBuilder: (context, index) {
-                                  final addressResult =
-                                      viewModel.addressResults[index];
-                                  return AddressResultCard(
-                                      result: addressResult);
-                                },
                               ),
-                            ),
-                            Expanded(
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: viewModel.totalPage,
-                                itemBuilder: (context, index) {
-                                  return TextButton(
-                                    onPressed: () {
-                                      final String keyword =
-                                          _addressController.text;
-                                      viewModel.getJusoInfoResult(
-                                          index + 1, keyword);
-                                    },
-                                    child: Text('${index + 1}',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: 'Dohyeon')),
-                                  );
-                                },
+                              Expanded(
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: addrViewModel.totalPage,
+                                  itemBuilder: (context, index) {
+                                    return TextButton(
+                                      onPressed: () {
+                                        final String keyword =
+                                            _addressController.text;
+                                        addrViewModel.getJusoInfoResult(
+                                            index + 1, keyword);
+                                      },
+                                      child: Text('${index + 1}',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Dohyeon')),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                '검색결과: ${viewModel.totalCount}',
-                                style: const TextStyle(fontFamily: 'Dohyeon'),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  '검색결과: ${addrViewModel.totalCount}',
+                                  style: const TextStyle(fontFamily: 'Dohyeon'),
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),

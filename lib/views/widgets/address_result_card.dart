@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:name_address_translator/models/model/address_translate_model.dart';
 import 'package:name_address_translator/models/model/favorite_model.dart';
-import 'package:name_address_translator/views/widgets/favorite_add_remove.dart';
+import 'package:name_address_translator/models/repository/favorite_add_remove.dart';
 
 class AddressResultCard extends StatelessWidget {
   final AddressItemModel result;
