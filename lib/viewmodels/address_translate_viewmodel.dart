@@ -8,10 +8,9 @@ import '../models/repository/address_translate_repository.dart';
 class AddressTranslateViewmodel extends ChangeNotifier {
   final AddressTranslateItemsRepository _repository;
 
-   AddressTranslateViewmodel({
+  AddressTranslateViewmodel({
     required AddressTranslateItemsRepository repository,
   }) : _repository = repository;
-
 
   List _searchResults = [];
   List<AddressItemModel> _addressResults = [];
@@ -30,7 +29,6 @@ class AddressTranslateViewmodel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-
   Future<void> getJusoInfoResult(int currentPage, String keyword) async {
     //화면갱신
 
@@ -47,5 +45,4 @@ class AddressTranslateViewmodel extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-
 }

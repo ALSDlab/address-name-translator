@@ -34,14 +34,14 @@ class NameItemModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'engName': engName,
       'accuracy': accuracy,
     };
   }
 
-  factory NameItemModel.fromMap(Map<String, dynamic> map) {
+  factory NameItemModel.fromJson(Map<String, dynamic> map) {
     return NameItemModel(
       engName: map['engName'] as String,
       accuracy: map['accuracy'] as String,

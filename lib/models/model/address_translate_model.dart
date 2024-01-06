@@ -39,7 +39,7 @@ class AddressItemModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'zipNumber': zipNumber,
       'engAddr': engAddr,
@@ -47,7 +47,7 @@ class AddressItemModel {
     };
   }
 
-  factory AddressItemModel.fromMap(Map<String, dynamic> map) {
+  factory AddressItemModel.fromJson(Map<String, dynamic> map) {
     return AddressItemModel(
       zipNumber: map['zipNumber'] as String,
       engAddr: map['engAddr'] as String,
